@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option csharp_namespace = "Yosan.Auth";
+
+package auth;
+
+service Auth {
+  rpc SignInUser (SignInRequest) returns (SignInResponse);
+  rpc LogInUser (LogInRequest) returns (LogInResponse);
+  rpc ValidateToken (TokenValidationRequest) returns (TokenValidationResponse);
+  rpc  RefreshAccessToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+}
+
+message SignInRequest {
+    string username = 1;
+    string email = 2;
+    string password = 3;
+}
+
+message SignInResponse {
+    bool isSucceed = 1;
+    int statusCode = 2;
+    string userId = 3;
+    string accessToken = 4;
+    string refreshToken = 5;
+    string error = 6;
+}
+
+message LogInRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message LogInResponse {
+    bool isSucceed = 1;
+    int statusCode = 2;
+    string userId = 3;
+    string accessToken = 4;
+    string refreshToken = 5;
+    string error = 6;
+}
+
+message TokenValidationRequest {
+    string token = 1;
+    string userId = 2;
+}
+
+message TokenValidationResponse {
+    bool isValid = 1;
+    int statusCode = 2;
+    string error = 3;
+}
+
+message RefreshTokenRequest {
+    string refreshToken = 1;
+    string userId = 2;
+}
+
+message RefreshTokenResponse {
+    bool isSucceed = 1;
+    int statusCode = 2;
+    string accessToken = 3;
+    string refreshToken = 4;
+    string error = 5;
+}
