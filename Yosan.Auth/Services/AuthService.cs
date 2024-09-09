@@ -1,34 +1,29 @@
 using Grpc.Core;
 using Yosan.Auth.Contexts;
+using Yosan.Auth.Services.ProtobufMethods;
 
 namespace Yosan.Auth.Services
 {
-    public class AuthService : Auth.AuthBase
+    public class AuthService(UserContext db) : Auth.AuthBase
     {
-        private readonly UserContext _db;
-        public AuthService(UserContext db)
+        public override async Task<SignInResponse> SignInUser(SignInRequest request, ServerCallContext context)
         {
-            _db = db;
+            return await new SignIn().AddUser(request, db);
         }
 
-        public override Task<SignInResponse> SignInUser(SignInRequest request, ServerCallContext context)
+        public override async Task<LogInResponse> LogInUser(LogInRequest request, ServerCallContext context)
         {
-            return base.SignInUser(request, context);
+            return await new LogIn().Authorize(request, db);
         }
 
-        public override Task<LogInResponse> LogInUser(LogInRequest request, ServerCallContext context)
+        public override async Task<TokenValidationResponse> ValidateToken(TokenValidationRequest request, ServerCallContext context)
         {
-            return base.LogInUser(request, context);
+            return await new Token().Validate(request, db);
         }
 
-        public override Task<TokenValidationResponse> ValidateToken(TokenValidationRequest request, ServerCallContext context)
+        public override async Task<RefreshTokenResponse> RefreshAccessToken(RefreshTokenRequest request, ServerCallContext context)
         {
-            return base.ValidateToken(request, context);
-        }
-
-        public override Task<RefreshTokenResponse> RefreshAccessToken(RefreshTokenRequest request, ServerCallContext context)
-        {
-            return base.RefreshAccessToken(request, context);
+            return await new Token().Resfresh(request, db);
         }
     }
 }
