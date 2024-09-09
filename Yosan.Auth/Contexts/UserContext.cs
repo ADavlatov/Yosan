@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Yosan.Auth.Models;
 
 namespace Yosan.Auth.Contexts
 {
@@ -19,7 +17,7 @@ namespace Yosan.Auth.Contexts
             modelBuilder.Entity<User>(entity => 
             {
                 entity.HasKey(x => x.Id);
-                entity.ToTable("");
+                entity.ToTable("YosanUsers");
                 entity.Property(x => x.Username).HasColumnName("Username");
                 entity.Property(x => x.Email).HasColumnName("Email");
                 entity.Property(x => x.Password).HasColumnName("Password");

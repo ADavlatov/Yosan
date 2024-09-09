@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Yosan.Auth.Services
 {
@@ -20,7 +24,7 @@ namespace Yosan.Auth.Services
         {
             var claims = new List<Claim>
             {
-                new(ClaimTypes.Name, usernameOrEmail)
+                new(ClaimTypes.Name, username)
             };
         
             ClaimsIdentity claimsIdentity =

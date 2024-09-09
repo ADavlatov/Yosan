@@ -7,17 +7,9 @@ namespace Yosan.Auth.Models
 {
     public class User
     {
-        public User(string username, string email, string password)
-        {
-            Username = username;
-            Email = email;
-            Password = password;
-
-        }
-
-        private Guid Id { get; set; }
-        private string Username { get; set; }
-        private string Email { get; set; }
-        private string Password { get; set; }
+        public Guid Id { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }
