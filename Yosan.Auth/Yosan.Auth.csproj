@@ -19,8 +19,4 @@
         <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services\ValidationMethods\" />
-    </ItemGroup>
-
 </Project>
