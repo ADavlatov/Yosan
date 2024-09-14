@@ -1,21 +1,48 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
 using Yosan.Auth.Contexts;
+using Yosan.Auth.Services.ValidationMethods;
 
-namespace Yosan.Auth.Services.ProtobufMethods
+namespace Yosan.Auth.Services.ProtobufMethods;
+
+public class Token
 {
-    public class Token
+    public async Task<TokenValidationResponse> Validate(TokenValidationRequest request)
     {
-        public async Task<TokenValidationResponse> Validate(TokenValidationRequest request, UserContext db)
+        AccessTokenValidator accessTokenValidator = new AccessTokenValidator();
+        var validationResult = await accessTokenValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
         {
-            return null;
+            return new TokenValidationResponse
+                { IsValid = false, Error = string.Join(", ", validationResult.Errors) };
         }
 
-        public async Task<RefreshTokenResponse> Resfresh(RefreshTokenRequest request, UserContext db)
+        return new TokenValidationResponse { IsValid = true };
+    }
+
+    public async Task<AccessTokenResponse> Get(AccessTokenRequest request, UserContext db)
+    {
+        RefreshTokenValidator refreshTokenValidator = new RefreshTokenValidator();
+        var validationResult = await refreshTokenValidator.ValidateAsync(request);
+
+        if (!validationResult.IsValid)
         {
-            return null;
+            return new AccessTokenResponse
+                { IsValid = false, Error = string.Join(", ", validationResult.Errors) };
         }
+
+        JwtSecurityToken jwt = new JwtSecurityToken(request.RefreshToken);
+
+        return new AccessTokenResponse
+        {
+            IsValid = true,
+            AccessToken =
+                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(jwt.Claims.First().Value, 1)),
+            RefreshToken =
+                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(jwt.Claims.First().Value, 180)),
+            UserId = db.Users.FirstOrDefault(x => x.Username == jwt.Claims.First().Value)!
+                .Id
+                .ToString()
+        };
     }
 }
