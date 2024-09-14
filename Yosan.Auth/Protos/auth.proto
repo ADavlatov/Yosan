@@ -5,10 +5,10 @@ option csharp_namespace = "Yosan.Auth";
 package auth;
 
 service Auth {
-  rpc SignInUser (SignInRequest) returns (SignInResponse);
-  rpc LogInUser (LogInRequest) returns (LogInResponse);
-  rpc ValidateToken (TokenValidationRequest) returns (TokenValidationResponse);
-  rpc  RefreshAccessToken (RefreshTokenRequest) returns (RefreshTokenResponse);
+    rpc SignInUser (SignInRequest) returns (SignInResponse);
+    rpc LogInUser (LogInRequest) returns (LogInResponse);
+    rpc ValidateToken (TokenValidationRequest) returns (TokenValidationResponse);
+    rpc GetAccessToken (AccessTokenRequest) returns (AccessTokenResponse);
 }
 
 message SignInRequest {
@@ -19,11 +19,13 @@ message SignInRequest {
 
 message SignInResponse {
     bool isSucceed = 1;
-    int32 statusCode = 2;
-    string userId = 3;
-    string accessToken = 4;
-    string refreshToken = 5;
-    string error = 6;
+    string userId = 2;
+    string accessToken = 3;
+    string refreshToken = 4;
+    string usernameErrors = 5;
+    string emailErrors = 6;
+    string passwordErrors = 7;
+    int32 status = 8;
 }
 
 message LogInRequest {
@@ -33,33 +35,33 @@ message LogInRequest {
 
 message LogInResponse {
     bool isSucceed = 1;
-    int32 statusCode = 2;
-    string userId = 3;
-    string accessToken = 4;
-    string refreshToken = 5;
-    string error = 6;
+    string userId = 2;
+    string accessToken = 3;
+    string refreshToken = 4;
+    string usernameErrors = 5;
+    string passwordErrors = 6;
+    int32 status = 7;
 }
 
 message TokenValidationRequest {
-    string token = 1;
-    string userId = 2;
+    string accessToken = 1;
 }
 
 message TokenValidationResponse {
-    bool isValid = 1;
-    int32 statusCode = 2;
-    string error = 3;
-}
-
-message RefreshTokenRequest {
-    string refreshToken = 1;
-    string userId = 2;
-}
-
-message RefreshTokenResponse {
     bool isSucceed = 1;
-    int32 statusCode = 2;
+    string error = 2;
+    int32 status = 3;
+}
+
+message AccessTokenRequest {
+    string refreshToken = 1;
+}
+
+message AccessTokenResponse {
+    bool isSucceed = 1;
+    string userId = 2;
     string accessToken = 3;
     string refreshToken = 4;
     string error = 5;
+    int32 status = 6;
 }
