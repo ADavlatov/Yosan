@@ -20,20 +20,20 @@ public class Token
         return new TokenValidationResponse { IsSucceed = true };
     }
 
-    public async Task<AccessTokenResponse> Get(AccessTokenRequest request, UserContext db)
+    public async Task<RefreshTokenResponse> Get(RefreshTokenRequest request, UserContext db)
     {
         RefreshTokenValidator refreshTokenValidator = new RefreshTokenValidator();
         var validationResult = await refreshTokenValidator.ValidateAsync(request);
 
         if (!validationResult.IsValid)
         {
-            return new AccessTokenResponse
+            return new RefreshTokenResponse
                 { IsSucceed = false, Error = string.Join(", ", validationResult.Errors) };
         }
 
         JwtSecurityToken jwt = new JwtSecurityToken(request.RefreshToken);
 
-        return new AccessTokenResponse
+        return new RefreshTokenResponse
         {
             IsSucceed = true,
             AccessToken =

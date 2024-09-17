@@ -8,7 +8,7 @@ service Auth {
     rpc SignInUser (SignInRequest) returns (SignInResponse);
     rpc LogInUser (LogInRequest) returns (LogInResponse);
     rpc ValidateToken (TokenValidationRequest) returns (TokenValidationResponse);
-    rpc GetAccessToken (AccessTokenRequest) returns (AccessTokenResponse);
+    rpc GetAccessToken (RefreshTokenRequest) returns (RefreshTokenResponse);
 }
 
 message SignInRequest {
@@ -53,11 +53,11 @@ message TokenValidationResponse {
     int32 status = 3;
 }
 
-message AccessTokenRequest {
+message RefreshTokenRequest {
     string refreshToken = 1;
 }
 
-message AccessTokenResponse {
+message RefreshTokenResponse {
     bool isSucceed = 1;
     string userId = 2;
     string accessToken = 3;

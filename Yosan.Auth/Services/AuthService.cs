@@ -22,7 +22,7 @@ public class AuthService(UserContext db) : Auth.AuthBase
         return new Token().Validate(request);
     }
 
-    public override Task<AccessTokenResponse> GetAccessToken(AccessTokenRequest request, ServerCallContext context)
+    public override Task<RefreshTokenResponse> GetAccessToken(RefreshTokenRequest request, ServerCallContext context)
     {
         return new Token().Get(request, db);
     }

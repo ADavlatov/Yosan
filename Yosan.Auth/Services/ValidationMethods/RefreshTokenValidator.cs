@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Yosan.Auth.Services.ValidationMethods;
 
-public class RefreshTokenValidator : AbstractValidator<AccessTokenRequest>
+public class RefreshTokenValidator : AbstractValidator<RefreshTokenRequest>
 {
     public RefreshTokenValidator()
     {
