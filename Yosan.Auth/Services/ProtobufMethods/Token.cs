@@ -20,6 +20,8 @@ public class Token
         return new TokenValidationResponse { IsSucceed = true };
     }
 
+    
+    //TODO сделать проверку userID 
     public async Task<RefreshTokenResponse> Get(RefreshTokenRequest request, UserContext db)
     {
         RefreshTokenValidator refreshTokenValidator = new RefreshTokenValidator();
