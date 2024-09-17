@@ -14,10 +14,10 @@ public class Token
         if (!validationResult.IsValid)
         {
             return new TokenValidationResponse
-                { IsValid = false, Error = string.Join(", ", validationResult.Errors) };
+                { IsSucceed = false, Error = string.Join(", ", validationResult.Errors) };
         }
 
-        return new TokenValidationResponse { IsValid = true };
+        return new TokenValidationResponse { IsSucceed = true };
     }
 
     public async Task<AccessTokenResponse> Get(AccessTokenRequest request, UserContext db)
@@ -28,14 +28,14 @@ public class Token
         if (!validationResult.IsValid)
         {
             return new AccessTokenResponse
-                { IsValid = false, Error = string.Join(", ", validationResult.Errors) };
+                { IsSucceed = false, Error = string.Join(", ", validationResult.Errors) };
         }
 
         JwtSecurityToken jwt = new JwtSecurityToken(request.RefreshToken);
 
         return new AccessTokenResponse
         {
-            IsValid = true,
+            IsSucceed = true,
             AccessToken =
                 new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(jwt.Claims.First().Value, 1)),
             RefreshToken =
