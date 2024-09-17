@@ -6,6 +6,7 @@ namespace Yosan.Auth.Services.ProtobufMethods;
 
 public class Token
 {
+    //TODO добавить проверку на userID
     public async Task<TokenValidationResponse> Validate(TokenValidationRequest request)
     {
         AccessTokenValidator accessTokenValidator = new AccessTokenValidator();

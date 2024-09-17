@@ -44,7 +44,8 @@ message LogInResponse {
 }
 
 message TokenValidationRequest {
-    string accessToken = 1;
+    string userId = 1;
+    string accessToken = 2;
 }
 
 message TokenValidationResponse {
