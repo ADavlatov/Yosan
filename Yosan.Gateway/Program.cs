@@ -1,6 +1,6 @@
-var builder = WebApplication.CreateBuilder(args);
+using Yosan.Gateway.Services;var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+await new RouterService(app).Execute();
 
 app.Run();
