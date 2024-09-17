@@ -1,6 +1,8 @@
-using Yosan.Gateway.Services;var builder = WebApplication.CreateBuilder(args);
+using Yosan.Gateway.Services;
+
+var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-await new RouterService(app).Execute();
+await new RouterService().Execute(app);
 
 app.Run();
