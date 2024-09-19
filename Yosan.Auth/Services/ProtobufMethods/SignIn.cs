@@ -1,4 +1,5 @@
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 using Yosan.Auth.Contexts;
 using Yosan.Auth.Models;
 using Yosan.Auth.Services.ValidationMethods;
@@ -9,27 +10,23 @@ namespace Yosan.Auth.Services.ProtobufMethods
     {
         public async Task<SignInResponse> AddUser(SignInRequest request, UserContext db)
         {
-            SignInValidator signInValidator = new SignInValidator(db);
-            var validationResult = await signInValidator.ValidateAsync(request);
-
-            if (!validationResult.IsValid)
+            var errors = await new UserValidator().ValidateSignInRequest(request, db);
+            
+            if (errors != "")
             {
                 return new SignInResponse
                 {
                     IsSucceed = false,
-                    UsernameErrors = string.Join(", ",
-                        validationResult.Errors.Where(x => x.ErrorMessage.Contains("username"))),
-                    EmailErrors = string.Join(", ", validationResult.Errors.Where(x => x.ErrorMessage.Contains("email"))),
-                    PasswordErrors = string.Join(", ",
-                        validationResult.Errors.Where(x => x.ErrorMessage.Contains("password")))
+                    Errors = errors
                 };
             }
 
-            db.Users!.Add(new User
+            var user = new User
             {
                 Username = request.Username, Email = request.Email, Password = request.Password
-            });
-            db.SaveChanges();
+            };
+            await db.Users.AddAsync(user);
+            await db.SaveChangesAsync();
 
             return new SignInResponse
             {
@@ -37,9 +34,7 @@ namespace Yosan.Auth.Services.ProtobufMethods
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(request.Username, 1)),
                 RefreshToken =
                     new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(request.Username, 15)),
-                UserId = db.Users.FirstOrDefault(x =>
-                        x.Username == request.Username && x.Email == request.Email && x.Password == request.Password)!.Id
-                    .ToString()
+                UserId = user.Id.ToString()
             };
         }
     }

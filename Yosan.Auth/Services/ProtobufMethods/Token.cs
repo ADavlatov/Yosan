@@ -9,31 +9,13 @@ public class Token
     //TODO добавить проверку на userID
     public async Task<TokenValidationResponse> Validate(TokenValidationRequest request)
     {
-        AccessTokenValidator accessTokenValidator = new AccessTokenValidator();
-        var validationResult = await accessTokenValidator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            return new TokenValidationResponse
-                { IsSucceed = false, Error = string.Join(", ", validationResult.Errors) };
-        }
-
         return new TokenValidationResponse { IsSucceed = true };
     }
 
-    
+
     //TODO сделать проверку userID 
     public async Task<RefreshTokenResponse> Get(RefreshTokenRequest request, UserContext db)
     {
-        RefreshTokenValidator refreshTokenValidator = new RefreshTokenValidator();
-        var validationResult = await refreshTokenValidator.ValidateAsync(request);
-
-        if (!validationResult.IsValid)
-        {
-            return new RefreshTokenResponse
-                { IsSucceed = false, Error = string.Join(", ", validationResult.Errors) };
-        }
-
         JwtSecurityToken jwt = new JwtSecurityToken(request.RefreshToken);
 
         return new RefreshTokenResponse
