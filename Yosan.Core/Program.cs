@@ -1,6 +1,12 @@
+using Yosan.Core.Contexts;
+using Yosan.Core.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<CoreContext>();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGrpcService<CoreService>();
 
 app.Run();
