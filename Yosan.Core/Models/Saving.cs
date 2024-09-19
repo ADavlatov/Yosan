@@ -1,0 +1,11 @@
+using Yosan.Core.Interfaces;
+
+namespace Yosan.Core.Models;
+
+public class Saving : IElement
+{
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public int Sum { get; set; }
+    public DateTime Date { get; set; }
+}
