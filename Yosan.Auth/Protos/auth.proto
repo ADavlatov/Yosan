@@ -22,10 +22,8 @@ message SignInResponse {
     string userId = 2;
     string accessToken = 3;
     string refreshToken = 4;
-    string usernameErrors = 5;
-    string emailErrors = 6;
-    string passwordErrors = 7;
-    int32 status = 8;
+    string errors = 5;
+    int32 status = 6;
 }
 
 message LogInRequest {
@@ -38,9 +36,8 @@ message LogInResponse {
     string userId = 2;
     string accessToken = 3;
     string refreshToken = 4;
-    string usernameErrors = 5;
-    string passwordErrors = 6;
-    int32 status = 7;
+    string errors = 5;
+    int32 status = 6;
 }
 
 message TokenValidationRequest {
@@ -50,7 +47,7 @@ message TokenValidationRequest {
 
 message TokenValidationResponse {
     bool isSucceed = 1;
-    string error = 2;
+    string errors = 2;
     int32 status = 3;
 }
 
@@ -64,6 +61,6 @@ message RefreshTokenResponse {
     string userId = 2;
     string accessToken = 3;
     string refreshToken = 4;
-    string error = 5;
+    string errors = 5;
     int32 status = 6;
 }
