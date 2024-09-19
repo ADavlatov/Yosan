@@ -29,6 +29,7 @@ public class IncomeConfiguration : IEntityTypeConfiguration<Income>
     {
         builder.ToTable("YosanIncomes");
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.UserId).HasColumnName("User");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.Property(x => x.Date).HasColumnName("Date");
@@ -41,6 +42,7 @@ public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
     {
         builder.ToTable("YosanExpenses");
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.UserId).HasColumnName("User");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.Property(x => x.Date).HasColumnName("Date");
@@ -53,6 +55,7 @@ public class SavingConfiguration : IEntityTypeConfiguration<Saving>
     {
         builder.ToTable("YosanSavings");
         builder.HasKey(x => x.Id);
+        builder.Property(x => x.UserId).HasColumnName("User");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.Property(x => x.Date).HasColumnName("Date");
