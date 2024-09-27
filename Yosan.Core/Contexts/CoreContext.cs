@@ -6,9 +6,8 @@ namespace Yosan.Core.Contexts;
 
 public class CoreContext : DbContext
 {
-    public DbSet<Income> Incomes { get; set; }
-    public DbSet<Expense> Expenses { get; set; }
-    public DbSet<Saving> Savings { get; set; }
+    public DbSet<Category> Categories { get; set; }
+    public DbSet<CategoryUnit> CategoryUnits { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -17,47 +16,34 @@ public class CoreContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new IncomeConfiguration());
-        modelBuilder.ApplyConfiguration(new ExpenseConfiguration());
-        modelBuilder.ApplyConfiguration(new SavingConfiguration());
+        modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+        modelBuilder.ApplyConfiguration(new CategoryUnitConfiguration());
     }
 }
 
-public class IncomeConfiguration : IEntityTypeConfiguration<Income>
+public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {
-    public void Configure(EntityTypeBuilder<Income> builder)
+    public void Configure(EntityTypeBuilder<Category> builder)
     {
-        builder.ToTable("YosanIncomes");
+        builder.ToTable("YosanCategories");
+        builder.HasKey(x => x.Id);
+        builder.Property(x => x.UserId).HasColumnName("User");
+        builder.Property(x => x.Name).HasColumnName("Name");
+        builder.Property(x => x.Type).HasColumnName("Type");
+        builder.HasMany(x => x.Units).WithOne(x => x.Category);
+    }
+}
+
+public class CategoryUnitConfiguration : IEntityTypeConfiguration<CategoryUnit>
+{
+    public void Configure(EntityTypeBuilder<CategoryUnit> builder)
+    {
+        builder.ToTable("YosanUnits");
         builder.HasKey(x => x.Id);
         builder.Property(x => x.UserId).HasColumnName("User");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.Property(x => x.Date).HasColumnName("Date");
-    }
-}
-
-public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
-{
-    public void Configure(EntityTypeBuilder<Expense> builder)
-    {
-        builder.ToTable("YosanExpenses");
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.UserId).HasColumnName("User");
-        builder.Property(x => x.Name).HasColumnName("Name");
-        builder.Property(x => x.Sum).HasColumnName("Sum");
-        builder.Property(x => x.Date).HasColumnName("Date");
-    }
-}
-
-public class SavingConfiguration : IEntityTypeConfiguration<Saving>
-{
-    public void Configure(EntityTypeBuilder<Saving> builder)
-    {
-        builder.ToTable("YosanSavings");
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.UserId).HasColumnName("User");
-        builder.Property(x => x.Name).HasColumnName("Name");
-        builder.Property(x => x.Sum).HasColumnName("Sum");
-        builder.Property(x => x.Date).HasColumnName("Date");
+        builder.HasOne(x => x.Category).WithMany(x => x.Units);
     }
 }
