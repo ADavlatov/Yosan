@@ -17,4 +17,8 @@
         <Protobuf Include="Protos\core.proto" GrpcServices="Server" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Interfaces\" />
+    </ItemGroup>
+
 </Project>

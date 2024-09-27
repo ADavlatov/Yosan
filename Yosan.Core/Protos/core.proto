@@ -4,91 +4,57 @@ option csharp_namespace = "Yosan.Core";
 
 package core;
 
-service Core { 
-  rpc AddIncome (AddIncomeRequest) returns (AddIncomeResponse);
-  rpc DeleteIncome (DeleteIncomeRequest) returns (DeleteIncomeResponse);
-  rpc AddExpense (AddExpenseRequest) returns (AddExpenseResponse);
-  rpc DeleteExpense (DeleteExpenseRequest) returns (DeleteExpenseResponse);
-  rpc AddSaving (AddSavingRequest) returns (AddSavingResponse);
-  rpc DeleteSaving (DeleteSavingRequest) returns (DeleteSavingResponse);
+service Core {
+  rpc AddCategory (AddCategoryRequest) returns (AddCategoryResponse);
+  rpc GetCategory (GetCategoryRequest) returns (GetCategoryResponse);
+  rpc RemoveCategory (RemoveCategoryRequest) returns (RemoveCategoryResponse);
+  rpc AddUnit (AddUnitRequest) returns (AddUnitResponse);
 }
 
-message AddIncomeRequest{
-  string user = 1;
+message AddCategoryRequest{
+  string userId = 1;
   string name = 2;
-  string sum = 3;
-  string date = 4;
+  int32 type = 3;
 }
 
-message AddIncomeResponse {
+message AddCategoryResponse{
   bool isSucceed = 1;
   int32 status = 2;
-  string errors = 3;
+  string error = 3;
 }
 
-message DeleteIncomeRequest {
-  string user = 1;
+message GetCategoryRequest{
+  string userId = 1;
   string name = 2;
-  string sum = 3;
-  string date = 4;
 }
 
-message DeleteIncomeResponse { 
-  bool IsSucceed = 1;
+message GetCategoryResponse{
+  bool isSucceed = 1;
   int32 status = 2;
-  string errors = 3;
+  string error = 3;
 }
 
-message AddExpenseRequest {
-  string user = 1; 
+message RemoveCategoryRequest{
+  string userId = 1;
   string name = 2;
-  string sum = 3;
-  string date = 4;
 }
 
-message AddExpenseResponse {
-  bool IsSucceed = 1; 
+message RemoveCategoryResponse{
+  bool isSucceed = 1;
   int32 status = 2;
-  string errors = 3;
+  string error = 3;
 }
 
-message DeleteExpenseRequest {
-  string user = 1;
+message AddUnitRequest{
+  string userId = 1;
   string name = 2;
-  string sum = 3;
-  string date = 4;
+  string type = 3;
+  string sum = 4;
+  string date = 5;
 }
 
-message DeleteExpenseResponse {
-  bool IsSucceed = 1;
+message AddUnitResponse{
+  bool isSucceed = 1;
   int32 status = 2;
-  string errors = 3;
+  string error = 3;
 }
-
-message AddSavingRequest {
-  string user = 1;
-  string name = 2;
-  string sum = 3;
-  string date = 4;
-}
-
-message AddSavingResponse {
-  bool IsSucceed = 1;
-  int32 status = 2;
-  string errors = 3;
-}
-
-message DeleteSavingRequest {
-  string user = 1;
-  string name = 2;
-  string sum = 3;
-  string date = 4;
-}
-
-message DeleteSavingResponse {
-  bool IsSucceed = 1;
-  int32 status = 2;
-  string errors = 3;
-}
-
-
