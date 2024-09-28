@@ -30,6 +30,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(x => x.UserId).HasColumnName("User");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Type).HasColumnName("Type");
+        builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.HasMany(x => x.Units).WithOne(x => x.Category);
     }
 }
