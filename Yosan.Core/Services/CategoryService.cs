@@ -30,7 +30,6 @@ public class CategoryService(CoreContext db)
     public async Task<GetCategoriesResponse> Get(GetCategoriesRequest request)
     {
         RepeatedField<CategoryObject> categoriesRepeatedField = new RepeatedField<CategoryObject>();
-        RepeatedField<UnitObject> unitsRepeatedField = new RepeatedField<UnitObject>();
         var categories = await db.Categories.Where(x => x.UserId == request.UserId).Include(x => x.Units).ToListAsync();
 
         if (!categories.Any())
@@ -41,18 +40,11 @@ public class CategoryService(CoreContext db)
         //@TODO переписать это непотребство
         foreach (var category in categories)
         {
-            foreach (var unit in category.Units)
-            {
-                unitsRepeatedField.Add(new UnitObject
-                    { Name = unit.Name, Sum = unit.Sum.ToString(), UserId = unit.UserId, Date = unit.Date.ToString() });
-            }
-
             categoriesRepeatedField.Add(new CategoryObject
             {
                 Id = category.Id.ToString(),
-                Name = category.Name, UserId = category.UserId, Type = category.Type, Units = { unitsRepeatedField }
+                Name = category.Name, UserId = category.UserId, Type = category.Type
             });
-            unitsRepeatedField.Clear();
         }
 
         return new GetCategoriesResponse
