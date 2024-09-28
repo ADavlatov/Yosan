@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Yosan.Gateway.Services.Validation;
+namespace Yosan.Gateway.Services.Validation.Auth;
 
 public class LogInValidator : AbstractValidator<LogInRequest>
 {

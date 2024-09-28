@@ -1,14 +1,14 @@
 using System.IdentityModel.Tokens.Jwt;
 using FluentValidation;
 
-namespace Yosan.Gateway.Services.Validation;
+namespace Yosan.Gateway.Services.Validation.Auth;
 
-public class AccessTokenValidator : AbstractValidator<TokenValidationRequest>
+public class RefreshTokenValidator : AbstractValidator<RefreshTokenRequest>
 {
-    public AccessTokenValidator()
+    public RefreshTokenValidator()
     {
         JwtSecurityTokenHandler jwt = new JwtSecurityTokenHandler();
-        RuleFor(x => x.AccessToken).Must(x => jwt.CanReadToken(x))
+        RuleFor(x => x.RefreshToken).Must(x => jwt.CanReadToken(x))
             .WithMessage("The token cannot be read").NotEmpty().WithMessage("The field cannot be empty");
     }
 }
