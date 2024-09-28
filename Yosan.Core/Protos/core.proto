@@ -61,12 +61,23 @@ message RemoveCategoryResponse{
   string error = 3;
 }
 
+message DepositCategoryRequest{
+  string categoryId = 1;
+  string sum = 2;
+}
+
+message DepositCategoryResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
 message AddUnitRequest{
   string userId = 1;
   string name = 2;
-  string type = 3;
   string sum = 4;
   string date = 5;
+  string categoryId = 6;
 }
 
 message AddUnitResponse{
@@ -74,3 +85,15 @@ message AddUnitResponse{
   int32 status = 2;
   string error = 3;
 }
+
+message GetUnitsRequest{
+  string categoryId = 1;
+}
+
+message GetUnitsResponse{
+  bool IsSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+  repeated UnitObject units = 4;
+}
+
