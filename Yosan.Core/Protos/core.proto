@@ -8,7 +8,9 @@ service Core {
   rpc AddCategory (AddCategoryRequest) returns (AddCategoryResponse);
   rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse);
   rpc RemoveCategory (RemoveCategoryRequest) returns (RemoveCategoryResponse);
+  rpc DepositCategory (DepositCategoryRequest) returns (DepositCategoryResponse);
   rpc AddUnit (AddUnitRequest) returns (AddUnitResponse);
+  rpc GetUnits (GetUnitsRequest) returns (GetUnitsResponse);
 }
 
 message CategoryObject {
@@ -16,7 +18,6 @@ message CategoryObject {
   string name = 2;
   int32 type = 3;
   string userId = 4;
-  repeated UnitObject units = 5;
 }
 
 message UnitObject {
