@@ -18,7 +18,7 @@ public class UnitService(CoreContext db)
 
         await db.CategoryUnits.AddAsync(new CategoryUnit
         {
-            UserId = request.UserId, Name = request.Name, Sum = float.Parse(request.Sum),
+            Name = request.Name, Sum = float.Parse(request.Sum),
             Date = DateOnly.Parse(request.Date), Category = category
         });
         await db.SaveChangesAsync();

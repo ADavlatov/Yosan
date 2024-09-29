@@ -41,7 +41,7 @@ public class CategoryUnitConfiguration : IEntityTypeConfiguration<CategoryUnit>
     {
         builder.ToTable("YosanUnits");
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.UserId).HasColumnName("User");
+        builder.Property(x => x.CategoryId).HasColumnName("CategoryId");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.Sum).HasColumnName("Sum");
         builder.Property(x => x.Date).HasColumnName("Date");
