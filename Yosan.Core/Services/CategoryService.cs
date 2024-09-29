@@ -50,23 +50,7 @@ public class CategoryService(CoreContext db)
         return new GetCategoriesResponse
             { IsSucceed = true, Status = 200, Error = "", Categories = { categoriesRepeatedField } };
     }
-
-    public async Task<RemoveCategoryResponse> Remove(RemoveCategoryRequest request)
-    {
-        var category =
-            await db.Categories.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.Id.ToString() == request.Id);
-
-        if (category == null)
-        {
-            return new RemoveCategoryResponse { IsSucceed = false, Status = 400, Error = "Category not found" };
-        }
-
-        db.Categories.Remove(category);
-        await db.SaveChangesAsync();
-
-        return new RemoveCategoryResponse { IsSucceed = true, Status = 200, Error = "" };
-    }
-
+    
     public async Task<DepositCategoryResponse> Deposit(DepositCategoryRequest request)
     {
         var category = await db.Categories.FirstOrDefaultAsync(x => x.Id.ToString() == request.CategoryId);
@@ -86,5 +70,21 @@ public class CategoryService(CoreContext db)
         await db.SaveChangesAsync();
 
         return new DepositCategoryResponse { IsSucceed = true, Status = 200, Error = "" };
+    }
+
+    public async Task<RemoveCategoryResponse> Remove(RemoveCategoryRequest request)
+    {
+        var category =
+            await db.Categories.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.Id.ToString() == request.Id);
+
+        if (category == null)
+        {
+            return new RemoveCategoryResponse { IsSucceed = false, Status = 400, Error = "Category not found" };
+        }
+
+        db.Categories.Remove(category);
+        await db.SaveChangesAsync();
+
+        return new RemoveCategoryResponse { IsSucceed = true, Status = 200, Error = "" };
     }
 }
