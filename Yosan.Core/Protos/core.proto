@@ -7,8 +7,8 @@ package core;
 service Core {
   rpc AddCategory (AddCategoryRequest) returns (AddCategoryResponse);
   rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse);
-  rpc RemoveCategory (RemoveCategoryRequest) returns (RemoveCategoryResponse);
   rpc DepositCategory (DepositCategoryRequest) returns (DepositCategoryResponse);
+  rpc RemoveCategory (RemoveCategoryRequest) returns (RemoveCategoryResponse);
   rpc AddUnit (AddUnitRequest) returns (AddUnitResponse);
   rpc GetUnits (GetUnitsRequest) returns (GetUnitsResponse);
 }
@@ -25,7 +25,7 @@ message UnitObject {
   string name = 2;
   string sum = 3;
   string date = 4;
-  string userId = 5;
+  string categoryId = 5;
 }
 
 message AddCategoryRequest{
@@ -51,23 +51,24 @@ message GetCategoriesResponse{
   repeated CategoryObject categories = 4;
 }
 
+message DepositCategoryRequest{
+  string categoryId = 1;
+  string sum = 2;
+  string userId = 3;
+}
+
+message DepositCategoryResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
 message RemoveCategoryRequest{
   string userId = 1;
   string id = 2;
 }
 
 message RemoveCategoryResponse{
-  bool isSucceed = 1;
-  int32 status = 2;
-  string error = 3;
-}
-
-message DepositCategoryRequest{
-  string categoryId = 1;
-  string sum = 2;
-}
-
-message DepositCategoryResponse{
   bool isSucceed = 1;
   int32 status = 2;
   string error = 3;
