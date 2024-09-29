@@ -1,0 +1,100 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Yosan.Gateway";
+
+package core;
+
+service Core {
+  rpc AddCategory (AddCategoryRequest) returns (AddCategoryResponse);
+  rpc GetCategories (GetCategoriesRequest) returns (GetCategoriesResponse);
+  rpc DepositCategory (DepositCategoryRequest) returns (DepositCategoryResponse);
+  rpc RemoveCategory (RemoveCategoryRequest) returns (RemoveCategoryResponse);
+  rpc AddUnit (AddUnitRequest) returns (AddUnitResponse);
+  rpc GetUnits (GetUnitsRequest) returns (GetUnitsResponse);
+}
+
+message CategoryObject {
+  string id = 1;
+  string name = 2;
+  int32 type = 3;
+  string userId = 4;
+}
+
+message UnitObject {
+  string id = 1;
+  string name = 2;
+  string sum = 3;
+  string date = 4;
+  string categoryId = 5;
+}
+
+message AddCategoryRequest{
+  string userId = 1;
+  string name = 2;
+  int32 type = 3;
+}
+
+message AddCategoryResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
+message GetCategoriesRequest{
+  string userId = 1;
+}
+
+message GetCategoriesResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+  repeated CategoryObject categories = 4;
+}
+
+message DepositCategoryRequest{
+  string categoryId = 1;
+  string sum = 2;
+  string userId = 3;
+}
+
+message DepositCategoryResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
+message RemoveCategoryRequest{
+  string userId = 1;
+  string id = 2;
+}
+
+message RemoveCategoryResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
+message AddUnitRequest{
+  string userId = 1;
+  string name = 2;
+  string sum = 4;
+  string date = 5;
+  string categoryId = 6;
+}
+
+message AddUnitResponse{
+  bool isSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+}
+
+message GetUnitsRequest{
+  string categoryId = 1;
+}
+
+message GetUnitsResponse{
+  bool IsSucceed = 1;
+  int32 status = 2;
+  string error = 3;
+  repeated UnitObject units = 4;
+}
