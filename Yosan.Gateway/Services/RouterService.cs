@@ -1,16 +1,22 @@
 using Grpc.Net.Client;
 using Yosan.Gateway.Services.Validation;
+using Yosan.Gateway.Services.Validation.Auth;
+using Yosan.Gateway.Services.Validation.Core.Categories;
 
 namespace Yosan.Gateway.Services;
 
 public class RouterService
 {
     private readonly Auth.AuthClient _authClient;
+    private readonly Core.CoreClient _coreClient;
 
     public RouterService()
     {
-        var channel = GrpcChannel.ForAddress("https://localhost:7231");
-        _authClient = new Auth.AuthClient(channel);
+        var authChannel = GrpcChannel.ForAddress("https://localhost:7231");
+        _authClient = new Auth.AuthClient(authChannel);
+
+        var coreChannel = GrpcChannel.ForAddress("");
+        _coreClient = new Core.CoreClient(coreChannel);
     }
 
     public void Execute(WebApplication app)
@@ -22,7 +28,8 @@ public class RouterService
 
                 if (!result.IsValid)
                 {
-                    return new SignInResponse { IsSucceed = false, Errors = string.Join(", ", result.Errors) };
+                    return new SignInResponse
+                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.SignInUserAsync(request);
@@ -36,7 +43,8 @@ public class RouterService
 
                 if (!result.IsValid)
                 {
-                    return new LogInResponse { IsSucceed = false, Errors = string.Join(", ", result.Errors) };
+                    return new LogInResponse
+                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.LogInUserAsync(request);
@@ -49,7 +57,8 @@ public class RouterService
 
                 if (!result.IsValid)
                 {
-                    return new TokenValidationResponse { IsSucceed = false, Errors = string.Join(", ", result.Errors) };
+                    return new TokenValidationResponse
+                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.ValidateTokenAsync(request);
@@ -62,10 +71,90 @@ public class RouterService
 
                 if (!result.IsValid)
                 {
-                    return new RefreshTokenResponse { IsSucceed = false, Errors = string.Join(", ", result.Errors) };
+                    return new RefreshTokenResponse
+                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.GetAccessTokenAsync(request);
             });
+
+        app.MapPost("api/v1/core/categories", async (AddCategoryRequest request) =>
+        {
+            var result = await new AddCategoryValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new AddCategoryResponse
+                    { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
+            }
+
+            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
+
+            if (!userResponse.IsSucceed)
+            {
+                return new AddCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
+            }
+
+            return await _coreClient.AddCategoryAsync(request);
+        });
+
+        app.MapGet("api/v1/core/categories", async (GetCategoriesRequest request) =>
+        {
+            var result = await new GetCategoriesValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new GetCategoriesResponse
+                    { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
+            }
+
+            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
+
+            if (!userResponse.IsSucceed)
+            {
+                return new GetCategoriesResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
+            }
+
+            return await _coreClient.GetCategoriesAsync(request);
+        });
+
+        app.MapPut("api/v1/core/categories", async (DepositCategoryRequest request) =>
+        {
+            var result = await new DepositCategoryValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new DepositCategoryResponse
+                    { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
+            }
+            
+            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
+
+            if (!userResponse.IsSucceed)
+            {
+                return new DepositCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
+            }
+            
+            return await _coreClient.DepositCategoryAsync(request);
+        });
+
+        app.MapDelete("api/v1/core/categories", async (RemoveCategoryRequest request) =>
+        {
+            var result = await new RemoveCategoryValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new RemoveCategoryResponse
+                    { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
+            }
+            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
+
+            if (!userResponse.IsSucceed)
+            {
+                return new RemoveCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
+            }
+
+            return await _coreClient.RemoveCategoryAsync(request);
+        });
     }
 }
