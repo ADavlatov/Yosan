@@ -75,11 +75,10 @@ message RemoveCategoryResponse{
 }
 
 message AddUnitRequest{
-  string userId = 1;
+  string categoryId = 1;
   string name = 2;
   string sum = 4;
   string date = 5;
-  string categoryId = 6;
 }
 
 message AddUnitResponse{
