@@ -2,6 +2,7 @@ using Grpc.Net.Client;
 using Yosan.Gateway.Services.Validation;
 using Yosan.Gateway.Services.Validation.Auth;
 using Yosan.Gateway.Services.Validation.Core.Categories;
+using Yosan.Gateway.Services.Validation.Core.Units;
 
 namespace Yosan.Gateway.Services;
 
@@ -127,14 +128,14 @@ public class RouterService
                 return new DepositCategoryResponse
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
             }
-            
+
             var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
 
             if (!userResponse.IsSucceed)
             {
                 return new DepositCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
             }
-            
+
             return await _coreClient.DepositCategoryAsync(request);
         });
 
@@ -147,6 +148,7 @@ public class RouterService
                 return new RemoveCategoryResponse
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
             }
+
             var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
 
             if (!userResponse.IsSucceed)
@@ -155,6 +157,34 @@ public class RouterService
             }
 
             return await _coreClient.RemoveCategoryAsync(request);
+        });
+
+        app.MapPost("api/v1/core/units", async (AddUnitRequest request) =>
+        {
+            var result = await new AddUnitValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new AddUnitResponse
+                {
+                    IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors)
+                };
+            }
+
+            return await _coreClient.AddUnitAsync(request);
+        });
+
+        app.MapGet("api/v1/core/units", async (GetUnitsRequest request) =>
+        {
+            var result = await new GetUnitsValidator().ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                return new GetUnitsResponse
+                    { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
+            }
+
+            return await _coreClient.GetUnitsAsync(request);
         });
     }
 }
