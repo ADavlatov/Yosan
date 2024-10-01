@@ -8,22 +8,22 @@ namespace Yosan.Auth.Services;
 public class TokenService
 {
     // Генерация JWT токена
-    public static JwtSecurityToken GetJwtToken(string username, int lifetime)
+    public static JwtSecurityToken GetJwtToken(string userId, int lifetime)
     {
         return new(issuer: AuthOptions.Issuer,
             audience: AuthOptions.Audience,
-            claims: GetClaims(username)
+            claims: GetClaims(userId)
                 .Claims,
             expires: DateTime.UtcNow.Add(TimeSpan.FromDays(lifetime)),
             signingCredentials: new(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
     }
 
     //Получение claims для генерации JWT токена
-    private static ClaimsIdentity GetClaims(string usernameOrEmail)
+    private static ClaimsIdentity GetClaims(string userId)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.Name, usernameOrEmail)
+            new(ClaimTypes.Name, userId)
         };
         
         ClaimsIdentity claimsIdentity =
