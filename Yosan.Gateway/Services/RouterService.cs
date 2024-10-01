@@ -1,5 +1,4 @@
 using Grpc.Net.Client;
-using Yosan.Gateway.Services.Validation;
 using Yosan.Gateway.Services.Validation.Auth;
 using Yosan.Gateway.Services.Validation.Core.Categories;
 using Yosan.Gateway.Services.Validation.Core.Units;
@@ -30,7 +29,7 @@ public class RouterService
                 if (!result.IsValid)
                 {
                     return new SignInResponse
-                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
+                        { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.SignInUserAsync(request);
@@ -45,7 +44,7 @@ public class RouterService
                 if (!result.IsValid)
                 {
                     return new LogInResponse
-                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
+                        { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.LogInUserAsync(request);
@@ -59,7 +58,7 @@ public class RouterService
                 if (!result.IsValid)
                 {
                     return new TokenValidationResponse
-                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
+                        { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.ValidateTokenAsync(request);
@@ -73,7 +72,7 @@ public class RouterService
                 if (!result.IsValid)
                 {
                     return new RefreshTokenResponse
-                        { IsSucceed = false, Status = 400, Errors = string.Join(", ", result.Errors) };
+                        { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
                 }
 
                 return await _authClient.GetAccessTokenAsync(request);
@@ -89,13 +88,6 @@ public class RouterService
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
             }
 
-            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
-
-            if (!userResponse.IsSucceed)
-            {
-                return new AddCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
-            }
-
             return await _coreClient.AddCategoryAsync(request);
         });
 
@@ -107,13 +99,6 @@ public class RouterService
             {
                 return new GetCategoriesResponse
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
-            }
-
-            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
-
-            if (!userResponse.IsSucceed)
-            {
-                return new GetCategoriesResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
             }
 
             return await _coreClient.GetCategoriesAsync(request);
@@ -129,13 +114,6 @@ public class RouterService
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
             }
 
-            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
-
-            if (!userResponse.IsSucceed)
-            {
-                return new DepositCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
-            }
-
             return await _coreClient.DepositCategoryAsync(request);
         });
 
@@ -147,13 +125,6 @@ public class RouterService
             {
                 return new RemoveCategoryResponse
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
-            }
-
-            var userResponse = await _authClient.CheckUserAsync(new CheckUserRequest { UserId = request.UserId });
-
-            if (!userResponse.IsSucceed)
-            {
-                return new RemoveCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
             }
 
             return await _coreClient.RemoveCategoryAsync(request);
