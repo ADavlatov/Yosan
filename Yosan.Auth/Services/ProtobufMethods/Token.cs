@@ -1,33 +1,56 @@
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore;
 using Yosan.Auth.Contexts;
-using Yosan.Auth.Services.ValidationMethods;
 
 namespace Yosan.Auth.Services.ProtobufMethods;
 
-public class Token
+public class Token(UserContext db)
 {
-    //TODO добавить проверку на userID
     public async Task<TokenValidationResponse> Validate(TokenValidationRequest request)
     {
-        return new TokenValidationResponse { IsSucceed = true };
+        var result = await IsWrongToken(request.AccessToken);
+
+        if (result ==  "Invalid token.")
+        {
+            return new TokenValidationResponse { IsSucceed = false, Status = 400, Error = result };
+        }
+
+        return new TokenValidationResponse { IsSucceed = true, Status = 200, Error = "" };
     }
 
-
-    //TODO сделать проверку userID 
     public async Task<RefreshTokenResponse> Get(RefreshTokenRequest request, UserContext db)
     {
-        JwtSecurityToken jwt = new JwtSecurityToken(request.RefreshToken);
+        var result = await IsWrongToken(request.RefreshToken);
+
+        if (result ==  "Invalid token.")
+        {
+            return new RefreshTokenResponse { IsSucceed = false, Status = 400, Error = result };
+        }
 
         return new RefreshTokenResponse
         {
             IsSucceed = true,
+            Status = 200,
+            Error = "",
             AccessToken =
-                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(jwt.Claims.First().Value, 1)),
+                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(
+                    result, 1)),
             RefreshToken =
-                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(jwt.Claims.First().Value, 180)),
-            UserId = db.Users.FirstOrDefault(x => x.Username == jwt.Claims.First().Value)!
-                .Id
-                .ToString()
+                new JwtSecurityTokenHandler().WriteToken(TokenService.GetJwtToken(result, 180))
         };
+    }
+
+    private async Task<string> IsWrongToken(string token)
+    {
+        var jwtHandler = new JwtSecurityTokenHandler();
+        var user = await db.Users.FirstOrDefaultAsync(x =>
+            x.Id.ToString() == jwtHandler.ReadJwtToken(token).Claims.First().ToString());
+
+        if (user == null)
+        {
+            return "Invalid token.";
+        }
+
+        return user.Id.ToString();
     }
 }
