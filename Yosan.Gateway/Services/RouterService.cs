@@ -88,6 +88,14 @@ public class RouterService
                     { IsSucceed = false, Status = 400, Error = string.Join(", ", result.Errors) };
             }
 
+            var userResponse = await _authClient.ValidateTokenAsync(new TokenValidationRequest
+                { AccessToken = request.AccessToken });
+
+            if (!userResponse.IsSucceed)
+            {
+                return new AddCategoryResponse { IsSucceed = false, Status = 400, Error = userResponse.Error };
+            }
+
             return await _coreClient.AddCategoryAsync(request);
         });
 
