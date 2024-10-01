@@ -16,7 +16,7 @@ namespace Yosan.Auth.Services.ProtobufMethods
                 return new LogInResponse
                 {
                     IsSucceed = false,
-                    Errors = errors
+                    Error = errors
                 };
             }
 
