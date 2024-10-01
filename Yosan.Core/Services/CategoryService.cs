@@ -1,4 +1,5 @@
-﻿using Google.Protobuf.Collections;
+﻿using System.IdentityModel.Tokens.Jwt;
+using Google.Protobuf.Collections;
 using Microsoft.EntityFrameworkCore;
 using Yosan.Core.Contexts;
 using Yosan.Core.Models;
@@ -9,8 +10,12 @@ public class CategoryService(CoreContext db)
 {
     public async Task<AddCategoryResponse> Add(AddCategoryRequest request)
     {
+        var jwtHandler = new JwtSecurityTokenHandler();
+        var userId = jwtHandler.ReadJwtToken(request.AccessToken).Claims.First().ToString();
         var category =
-            await db.Categories.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.Name == request.Name);
+            await db.Categories.FirstOrDefaultAsync(x =>
+                x.UserId == userId &&
+                x.Name == request.Name);
 
         if (category != null)
         {
@@ -19,7 +24,7 @@ public class CategoryService(CoreContext db)
 
         await db.Categories.AddAsync(new Category
         {
-            Name = request.Name, UserId = request.UserId, Type = request.Type,
+            Name = request.Name, UserId = userId, Type = request.Type,
             Units = new List<CategoryUnit>()
         });
         await db.SaveChangesAsync();
@@ -29,15 +34,16 @@ public class CategoryService(CoreContext db)
 
     public async Task<GetCategoriesResponse> Get(GetCategoriesRequest request)
     {
-        RepeatedField<CategoryObject> categoriesRepeatedField = new RepeatedField<CategoryObject>();
-        var categories = await db.Categories.Where(x => x.UserId == request.UserId).Include(x => x.Units).ToListAsync();
+        var jwtHandler = new JwtSecurityTokenHandler();
+        var userId = jwtHandler.ReadJwtToken(request.AccessToken).Claims.First().ToString();
+        var categoriesRepeatedField = new RepeatedField<CategoryObject>();
+        var categories = await db.Categories.Where(x => x.UserId == userId).Include(x => x.Units).ToListAsync();
 
         if (!categories.Any())
         {
-            return new GetCategoriesResponse { IsSucceed = false, Status = 400, Error = "UserId failed" };
+            return new GetCategoriesResponse { IsSucceed = false, Status = 400, Error = "Categories not found" };
         }
 
-        //@TODO переписать это непотребство
         foreach (var category in categories)
         {
             categoriesRepeatedField.Add(new CategoryObject
@@ -50,7 +56,7 @@ public class CategoryService(CoreContext db)
         return new GetCategoriesResponse
             { IsSucceed = true, Status = 200, Error = "", Categories = { categoriesRepeatedField } };
     }
-    
+
     public async Task<DepositCategoryResponse> Deposit(DepositCategoryRequest request)
     {
         var category = await db.Categories.FirstOrDefaultAsync(x => x.Id.ToString() == request.CategoryId);
@@ -74,8 +80,11 @@ public class CategoryService(CoreContext db)
 
     public async Task<RemoveCategoryResponse> Remove(RemoveCategoryRequest request)
     {
+        var jwtHandler = new JwtSecurityTokenHandler();
         var category =
-            await db.Categories.FirstOrDefaultAsync(x => x.UserId == request.UserId && x.Id.ToString() == request.Id);
+            await db.Categories.FirstOrDefaultAsync(x =>
+                x.UserId == jwtHandler.ReadJwtToken(request.AccessToken).Claims.First().ToString() &&
+                x.Id.ToString() == request.CategoryId);
 
         if (category == null)
         {
