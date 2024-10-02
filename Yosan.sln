@@ -8,6 +8,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosan.Gateway", "Yosan.Gate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosan.TestClient", "Yosan.TestClient\Yosan.TestClient.csproj", "{4F5856FF-010C-4CD9-BDDC-92DFD7A0538B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{88EE3190-2101-4452-BFE9-0623A9C06225}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosan.Core.Tests", "Yosan.Core.Tests\Yosan.Core.Tests.csproj", "{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosan.Auth.Tests", "Yosan.Auth.Tests\Yosan.Auth.Tests.csproj", "{29195E47-315F-4E1D-A96A-09FADC4B0182}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yosan.Gateway.Tests", "Yosan.Gateway.Tests\Yosan.Gateway.Tests.csproj", "{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +38,22 @@ Global
 		{4F5856FF-010C-4CD9-BDDC-92DFD7A0538B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F5856FF-010C-4CD9-BDDC-92DFD7A0538B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F5856FF-010C-4CD9-BDDC-92DFD7A0538B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29195E47-315F-4E1D-A96A-09FADC4B0182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29195E47-315F-4E1D-A96A-09FADC4B0182}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29195E47-315F-4E1D-A96A-09FADC4B0182}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29195E47-315F-4E1D-A96A-09FADC4B0182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A14BE6F4-2FC9-4996-AB3E-4C1351541ED3} = {88EE3190-2101-4452-BFE9-0623A9C06225}
+		{29195E47-315F-4E1D-A96A-09FADC4B0182} = {88EE3190-2101-4452-BFE9-0623A9C06225}
+		{D8C9CFCB-6A8E-4DFC-B396-C602B17F5992} = {88EE3190-2101-4452-BFE9-0623A9C06225}
 	EndGlobalSection
 EndGlobal
