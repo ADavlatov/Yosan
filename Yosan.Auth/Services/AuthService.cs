@@ -1,5 +1,4 @@
 using Grpc.Core;
-using Microsoft.EntityFrameworkCore;
 using Yosan.Auth.Contexts;
 using Yosan.Auth.Services.ProtobufMethods;
 

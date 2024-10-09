@@ -7,6 +7,4 @@ builder.Services.AddHostedService<RabbitMqListener>();
 
 var app = builder.Build();
 
-new RouterService().Execute(app);
-
 app.Run();
