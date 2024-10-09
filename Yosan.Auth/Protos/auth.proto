@@ -12,9 +12,10 @@ service Auth {
 }
 
 message SignInRequest {
-    string username = 1;
-    string email = 2;
-    string password = 3;
+    string path = 1;
+    string username = 2;
+    string email = 3;
+    string password = 4;
 }
 
 message SignInResponse {
@@ -27,8 +28,9 @@ message SignInResponse {
 }
 
 message LogInRequest {
-    string username = 1;
-    string password = 2;
+    string path = 1;
+    string username = 2;
+    string password = 3;
 }
 
 message LogInResponse {
@@ -41,7 +43,8 @@ message LogInResponse {
 }
 
 message TokenValidationRequest {
-    string accessToken = 1;
+    string path = 1;
+    string accessToken = 2;
 }
 
 message TokenValidationResponse {
@@ -51,7 +54,8 @@ message TokenValidationResponse {
 }
 
 message RefreshTokenRequest {
-    string refreshToken = 1;
+    string path = 1;
+    string refreshToken = 2;
 }
 
 message RefreshTokenResponse {
