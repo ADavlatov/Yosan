@@ -29,9 +29,11 @@ message UnitObject {
 }
 
 message AddCategoryRequest{
-  string accessToken = 1;
-  string name = 2;
-  int32 type = 3;
+  string path = 1;
+  string method = 2;
+  string accessToken = 3;
+  string name = 4;
+  int32 type = 5;
 }
 
 message AddCategoryResponse{
@@ -41,7 +43,8 @@ message AddCategoryResponse{
 }
 
 message GetCategoriesRequest{
-  string accessToken = 1;
+  string path = 1;
+  string accessToken = 2;
 }
 
 message GetCategoriesResponse{
@@ -52,9 +55,10 @@ message GetCategoriesResponse{
 }
 
 message DepositCategoryRequest{
-  string categoryId = 1;
-  string sum = 2;
-  string accessToken = 3;
+  string path = 1;
+  string categoryId = 2;
+  string sum = 3;
+  string accessToken = 4;
 }
 
 message DepositCategoryResponse{
@@ -64,8 +68,9 @@ message DepositCategoryResponse{
 }
 
 message RemoveCategoryRequest{
-  string accessToken = 1;
-  string categoryId = 2;
+  string path = 1;
+  string accessToken = 2;
+  string categoryId = 3;
 }
 
 message RemoveCategoryResponse{
@@ -75,8 +80,9 @@ message RemoveCategoryResponse{
 }
 
 message AddUnitRequest{
-  string categoryId = 1;
-  string name = 2;
+  string path = 1;
+  string categoryId = 2;
+  string name = 3;
   string sum = 4;
   string date = 5;
   string accessToken = 6;
@@ -89,8 +95,9 @@ message AddUnitResponse{
 }
 
 message GetUnitsRequest{
-  string categoryId = 1;
-  string accessToken = 2;
+  string path = 1;
+  string categoryId = 2;
+  string accessToken = 3;
 }
 
 message GetUnitsResponse{
